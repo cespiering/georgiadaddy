@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Results{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>     
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<h3>District: {{district}}</h3>
+<table class="table table-striped table-bordered table-sm table-primary" id="sortTable" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Officeholder</th>
+            <th>Congress Branch</th>
+            <th>Donor Name</th>
+            <th>Donor Type</th>
+            <th>Sector</th>
+            <th>Amount</th>
+            
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for obj in official_objs %}
+            {% set donations = obj.donations%}
+            {% for item in donations %}
+            <tr class = item>
+            <td><a href = "/name_search/{{item.official.official_name}}">{{item.official.official_name}}</a></td>
+            <td>{{item.official.height}}</td>
+            <td>{{item.donor.donor_name}}</td>
+            <td>{{item.donor.donor_type}}</td>
+            <td>{{item.donor.broad_sector}}</td>
+            <td>{{item.amount}}</td>
+            {%endfor%}
+            
+        {%endfor%}
+    </tbody>
+</table>
+
+{% endblock content%}
+

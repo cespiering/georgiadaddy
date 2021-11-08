@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Search Home{% endblock %}
+
+{% block content %}
+    <div class="search">
+        <form action="", method="POST">
+            {{ form.hidden_tag() }}
+            <fieldset>
+                <legend>Search Type</legend>
+                <div>
+                    {{form.search_type.label}}
+                    {{form.search_type}}
+                </div>
+                <div>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+ 
+{% endblock content %}

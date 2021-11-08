@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Results{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>     
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<h3>Postion: {{position}}</h3>
+<table class="table table-striped table-bordered table-sm table-primary" id="sortTable" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Officeholder</th>
+            <th>Party</th>
+            <th>Office Held</th>
+            
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for pol in pols %}
+            <tr class = item>
+            <td><a href = "/name_search/{{pol.official_name}}">{{pol.official_name}}</a></td>
+            <td>{{pol.party}}</td>
+            <td>{{pol.position_name}}</td>
+ 
+        {%endfor%}
+    </tbody>
+</table>
+
+{% endblock content%}

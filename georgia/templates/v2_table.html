@@ -1,0 +1,46 @@
+{% extends 'log_base.html' %}
+{% block title %}Results V2{% endblock %}
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+<table id="data1" class="table table-striped table-bordered table-hover table-primary">
+    <thead>
+      <tr>
+        <th>Official Name</th>
+        <th>Position Name</th>
+        <th>Party</th>
+        <th>Donor Name</th>
+        <th>Donor Type</th>
+        <th>Donor Industry</th>
+        <th>Amount</th>
+        <th>Num Records</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+{% endblock content%}
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#data1').DataTable({
+        ajax: '/api/data1',
+        serverSide: true,
+        columns: [
+          {'data': 'official_name'},
+          {'data': 'position_name'},
+          {'data': 'party'},
+          {'data': 'donor_name'},
+          {'data': 'donor_type'},
+          {'data': 'broad_sector'},
+          {'data': 'amount'},
+          {'data': 'record_count'},
+
+        ],
+      });
+    });
+  </script>
+{% endblock %}

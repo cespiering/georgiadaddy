@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}TestSearch{% endblock %}
+
+{% block content %}
+<div class="search">
+    <form action="", method="POST">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <legend>Search by Office-Holder</legend>
+            <div>
+            <div id="show_party">
+                {{form.party.label}}
+                {{form.party}}
+            </div>    
+            <div id="show_branch">
+                {{form.branch.label}}
+                {{form.branch}}
+            </div>
+            <div id="show_exec_jobs">
+                {{form.exec_jobs.label}}
+                {{form.exec_jobs}} 
+            </div>
+            <div id = "show_district" >
+                {{form.district.label}}
+                {{form.district}}
+            </div>
+            <div id = "show_height">
+                {{form.height.label}}
+                {{form.height}}
+            </div>
+            <div id = "show_court">
+                {{form.court.label}}
+                {{form.court}}
+            </div>
+                {{form.max_amount.label}}
+                {{form.max_amount}}
+                {{form.min_amount.label}}
+                {{form.min_amount}}
+                {{form.donation_type.label}}
+                {{form.donation_type}}
+                {{form.donor_sector.label}}
+                {{form.donor_sector}}
+          </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+ 
+{% endblock content %}
