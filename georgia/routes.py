@@ -120,17 +120,20 @@ def search_specific_official():
     if form.is_submitted():
         session["payload"] = form.data
         name = form.last_name.data
-        print(f"******{session['payload']}")
         if name == '':
             flash('Enter A Name', 'danger')
-            return redirect(url_for('search_home'))
+            return redirect(url_for('search_specific_official'))
         # session['payload']= form.data
         
         if filter.check_for_duplicate_names(name):
             return redirect(url_for('multiple_names', last=name))
-        else:
+        if filter.get_official_by_last_name(name):
             full_name = filter.get_official_by_last_name(name)
+            print(f'**********{full_name}')
             return redirect(url_for("link_name_search", name=full_name))
+        else:
+            flash('No such official exists', 'danger')
+            return redirect(url_for('search_specific_official'))
     return render_template("search_specific_official.html", form=form)
 
 

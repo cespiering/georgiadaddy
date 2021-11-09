@@ -72,6 +72,8 @@ def get_official_by_last_name(last_name):
     """returns the full name of officeholder if no name duplicates"""
     last_name = last_name.upper()
     official = Official.query.filter_by(last_name=last_name).first()
+    if official == None:
+        return None
     return official.official_name
 
 def check_for_duplicate_names(last_name):

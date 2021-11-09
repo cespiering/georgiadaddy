@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-<h3>{{name}} : {{position}}</h3>
+
 <table class="table table-striped table-bordered table-sm table-primary" id="sortTable" cellspacing="0" width="100%">
     <thead>
         <tr>
@@ -30,7 +30,7 @@
                 <td> {{item.Donation.election_year}} </td>
                 <td> {{item.Official.official_name}} </td>
                 <td> {{item.Official.position_name}} </td>
-                <td> {{item.Official.party} </td>
+                <td> {{item.Official.party}} </td>
                 <td><a href = "/donor_search/{{item.Donor.donor_name}}">{{item.Donor.donor_name}}</a></td>
                 <td> {{item.Donor.donor_type}} </td>
                 <td> {{item.Donor.broad_sector}} </td>
