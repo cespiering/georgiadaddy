@@ -202,17 +202,16 @@ def narrow_by_official_general(params):
                 str_num = "00" + str_num
             elif len(str_num) == 2:
                 str_num = "0" + str_num
-            num = int(str_num)
-            results = results.filter(Official.court==num)
-        if key == "party":
+            results = results.filter(Official.district==str_num)
+        if key == 'party':
             results = results.filter(Official.party==params[key])
     return results.all()
 
 def test_filter(params):
     results = db.session.query(Official, Donation, Donor).select_from(Official).join(Donation).join(Donor)
     params = {key:value for (key, value) in params.items() if value != None}
-    params = {key:value for (key, value) in params.items() if value != "All"}
-    params = {key:value for (key, value) in params.items() if value != "None"}
+    params = {key:value for (key, value) in params.items() if value != 'All'}
+    params = {key:value for (key, value) in params.items() if value != 'None'}
     params = {key:value for (key, value) in params.items() if value != ''}
     results = donation_filter(params, results)
     for key in params:
@@ -226,10 +225,10 @@ def test_filter(params):
             results = results.filter(Official.court==params[key])
         if key == "district":
             str_num = params[key]
-            if len(str_num) == 1:
-                str_num = "00" + str_num
-            elif len(str_num) == 2:
+            if len(str_num) == 2:
                 str_num = "0" + str_num
+            elif len(str_num) == 1:
+                str_num = "00" + str_num
             results = results.filter(Official.court==str_num)
         if key == "party":
             results = results.filter(Official.party==params[key])

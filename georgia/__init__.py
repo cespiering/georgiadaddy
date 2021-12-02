@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '7099103918028e63cf32476ae2e3d08e'
+app.config['SECRET_KEY'] = os.environ.get('GEORGIA_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///georgia'
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)

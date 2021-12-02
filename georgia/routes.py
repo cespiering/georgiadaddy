@@ -76,7 +76,7 @@ def reset_password(token):
     user = User.verify_reset_token(token)
     if user is None:
         flash("The session has expired. Please try again", 'warning')
-        return redirect(url_for("reset_email"))
+        return redirect(url_for("reset_password_email"))
 
     form = ChangePasswordForm()
     if form.validate_on_submit():
@@ -144,18 +144,6 @@ def multiple_names(last):
     return render_template('multiple_names.html', matches=matches)
 
 
-@app.route("/search_general_officials", methods=['GET', 'POST'])
-def search_general_officials():
-    form = GeneralNameForm()
-    exec_jobs = filter.find_all_exec()
-    form.exec_jobs.choices = [(item, item) for item in exec_jobs]
-    if form.is_submitted():
-        session["payload"] = form.data
-        payload = session["payload"]
-        print(f"**********{payload}")
-        results = filter.narrow_by_official_general(payload)
-        return render_template("general_official_results.html", results = results)
-    return render_template("search_general_official.html", form=form)
 
 @app.route("/branch.json")
 def dropdown():
@@ -178,6 +166,24 @@ def dropdown():
         show = {"#show_height": "height", "#show_district": "district"}
     return jsonify({"hide": hide, "n_values": values, "show": show})
 
+@app.route("/search_general_officials", methods=['GET', 'POST'])
+def search_general_officials():
+    form = GeneralNameForm()
+    exec_jobs = filter.find_all_exec()
+    form.exec_jobs.choices = [('None', '')]
+    form.exec_jobs.choices.extend([(item, item) for item in exec_jobs])
+    
+    if form.is_submitted():
+        session["payload"] = form.data
+        payload = session["payload"]
+        print(f"**********{payload}")
+        results = filter.narrow_by_official_general(payload)
+        if len(results) < 1:
+            flash("No results for those search parameters.", 'danger')
+            return redirect(url_for('search_general_officials'))
+
+        return render_template("general_official_results.html", results = results)
+    return render_template("search_general_official.html", form=form)
 
 @app.route("/search_general_donors", methods = ['GET', 'POST'])
 def search_general_donors():
@@ -208,10 +214,15 @@ def link_name_search(name):
 # ^ V2 SEARCH FUNCTIONS
 
 @app.route('/search_V2', methods=['GET', 'POST'])
-def test_table():
+def search_V2():
     form = TestForm()
+    exec_jobs = filter.find_all_exec()
+    form.exec_jobs.choices = [('None', '')]
+    form.exec_jobs.choices.extend([(item, item) for item in exec_jobs])
     if form.is_submitted():
         session['params'] = form.data
+        test = session['params']
+        print(f'******{test}')
         return redirect(url_for('show_V2_table'))
     return render_template("general_official_search_v2.html", form=form)
     

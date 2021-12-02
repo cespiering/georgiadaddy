@@ -20,7 +20,6 @@ function showOptions(evt) {
       };
     });
   }    
-    // TODO: request weather with that URL and show the forecast in #weather-info
   
     
   $('#branch').on('change', showOptions);
