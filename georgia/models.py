@@ -6,7 +6,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
-# note: put in a note
+
 
 class User(UserMixin, db.Model):
     """A user."""
@@ -150,8 +150,8 @@ class Official(db.Model):
 
 
 #note: trying to connect to the database to populate tables
-# def connect_to_db(flask_app, db_uri="postgresql:///georgia", echo=True):
-def connect_to_db(flask_app, db_uri="postgresql:///georgia_test", echo=True):
+
+def connect_to_db(flask_app, db_uri="postgresql:///georgia", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

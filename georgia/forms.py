@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField, FloatField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
-from georgia.Database.models import User
+from georgia.models import User
 
 class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired()])

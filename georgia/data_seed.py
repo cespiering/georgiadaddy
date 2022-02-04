@@ -1,26 +1,26 @@
-# import os
-# import sys
+import os
+import sys
 
-# #changing path allows for db connection in nested structure
-# BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# sys.path.append(BASE_PATH)
+#changing path allows for db connection in nested structure
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_PATH)
 
 import csv
-from georgia.app_config import app, db
+from georgia import app, db
 import georgia.create as c
 import georgia.models as models
 import georgia.user_funcs as u
 
 #dropdb/createdb is utlized when changing database contents, otherwise can be excluded
-os.system("dropdb georgia_test")
-os.system("createdb georgia_test")
+os.system("dropdb georgia")
+os.system("createdb georgia")
 
 models.connect_to_db(app)
 db.create_all()
 
 # creates a list of dictionaries from the alldata.tsv file
 data_list = []
-with open("data/test.tsv", newline= "") as data:
+with open("data/alldata.tsv", newline= "") as data:
     data_reader = csv.DictReader(data, delimiter = '\t')
     for line in data_reader:
         data_list.append(line)

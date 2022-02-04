@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, render_template, flash, redirect, session, url_for
 from georgia import app, db, mail
 from georgia.forms import TestForm, LoginForm, ChangePasswordForm, EmailResetForm, SpecificNameForm, SearchType, GeneralNameForm
-from georgia.Database.models import User, Official, Donation, Donor
+from georgia.models import User, Official, Donation, Donor
 from flask_login import login_user, current_user, logout_user, login_required
 import georgia.user_funcs as u
 import georgia.filter as filter
