@@ -1,8 +1,14 @@
-from georgia import db
+from georgia import db, login_manager
 from georgia.models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 # ^USER RELATED FUNCTIONS:
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
 def hash_password(password):
     """Takes in a password, uses werkzeug.security to return hashed password"""
     hash_pass = generate_password_hash(password)

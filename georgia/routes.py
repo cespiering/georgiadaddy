@@ -6,11 +6,9 @@ from flask_login import login_user, current_user, logout_user, login_required
 import georgia.user_funcs as u
 import georgia.filter as filter
 from flask_mail import Message
-# views = Blueprint("views", __name__)
+
 
 # ^ HOMEPAGE:
-
-
 @app.route("/")
 @app.route('/home')
 def show_homepage():
@@ -22,7 +20,7 @@ def about():
     return render_template('about.html', title='About')
 
 
-# ^ LOGIN AND PASSWORD CHANGING:
+# ^ LOGIN/LOGOUT AND PASSWORD CHANGING:
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

@@ -1,11 +1,7 @@
 
-from georgia import db, login_manager, app
+from georgia import db, app
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-
-@login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
 
 
 class User(UserMixin, db.Model):
