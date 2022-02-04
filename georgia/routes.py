@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, render_template, flash, redirect, session, url_for
+from flask import jsonify, request, render_template, flash, redirect, session, url_for
 from georgia import app, db, mail
 from georgia.forms import TestForm, LoginForm, ChangePasswordForm, EmailResetForm, SpecificNameForm, SearchType, GeneralNameForm
 from georgia.models import User, Official, Donation, Donor

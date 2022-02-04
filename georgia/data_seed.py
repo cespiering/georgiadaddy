@@ -7,7 +7,6 @@ sys.path.append(BASE_PATH)
 
 import csv
 from georgia import app, db
-import georgia.create as c
 import georgia.models as models
 import georgia.user_funcs as u
 
@@ -70,18 +69,20 @@ def create_official_entry(dict, official_id):
         pos_list = position_name.split(" ")
         district = pos_list[-1]
         height = pos_list[0]
-    c.create_official(official_id=official_id, official_name=official_name, last_name=last_name, party=party, position_name=position_name, branch=branch, court=court, district=district, height=height)
-
+    official = models.Official(official_id=official_id, official_name=official_name, last_name=last_name, party=party, position_name=position_name, branch=branch, court=court, district=district, height=height)
+    db.session.add(official)
+    db.session.commit(official)
 
 def create_donor_entry(dict, donor_id):
-        donor_name = dict["Contributor"]
-        donor_type = dict["Type_of_Contributor"]
-        broad_sector = dict["Broad_Sector"]
-        general_industry = dict["General_Industry"]
-        specific_type = dict["Specific_Business"]
+    donor_name = dict["Contributor"]
+    donor_type = dict["Type_of_Contributor"]
+    broad_sector = dict["Broad_Sector"]
+    general_industry = dict["General_Industry"]
+    specific_type = dict["Specific_Business"]
 
-        c.create_donor(donor_id = donor_id, donor_name=donor_name, donor_type=donor_type, broad_sector=broad_sector, general_industry=general_industry, specific_type=specific_type)
-
+    donor = models.Donor(donor_id = donor_id, donor_name=donor_name, donor_type=donor_type, broad_sector=broad_sector, general_industry=general_industry, specific_type=specific_type)
+    db.session.add(donor)
+    db.session.commit()
 
 def create_donation_entry(dict):
     official_id = dict["ga_id"]
@@ -90,8 +91,9 @@ def create_donation_entry(dict):
     election_year = dict["Election_Year"]
     record_count = dict["#_of_Records"]
 
-    c.create_donation(amount=amount, election_year=election_year, record_count=record_count, donor_id=donor_id, official_id=official_id)
-
+    donation = models.Donation(amount=amount, election_year=election_year, record_count=record_count, donor_id=donor_id, official_id=official_id)
+    db.session.add(donation)
+    db.session.commit()
 
 #Parse each data line and populate tables
 processed_officials = []
@@ -110,7 +112,7 @@ for dict in data_list:
         processed_donors.append(donor_id)
         create_donor_entry(dict, donor_id)
     
-    create_donor_entry()
+    create_donation_entry(dict)
 
 
 
