@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
         return f"<User id={self.id} email={self.email}>"
 
 
-    def get_reset_token(self, expires_sec=1800):
+    def get_reset_token(self, expires_sec=60):
         """Gets an encrypted token that lasts for 30 mins"""
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
         token = s.dumps({'user_id': self.id}).decode('utf-8')
@@ -150,8 +150,7 @@ class Official(db.Model):
 
 
 #note: trying to connect to the database to populate tables
-# def connect_to_db(flask_app, db_uri="postgresql:///georgia", echo=True):
-def connect_to_db(flask_app, db_uri="postgresql:///georgia_test", echo=True):
+def connect_to_db(flask_app, db_uri="postgresql:///georgia", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -162,5 +161,10 @@ def connect_to_db(flask_app, db_uri="postgresql:///georgia_test", echo=True):
     print("Connected to the db!")
 
 if __name__ == "__main__":
+    # from corrupt_server import app
+
+    # Call connect_to_db(app, echo=False) if your program output gets
+    # too annoying; this will tell SQLAlchemy not to print out every
+    # query it executes.
 
     connect_to_db(app)

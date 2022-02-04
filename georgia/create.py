@@ -1,9 +1,4 @@
-import os
-import sys
-
-#changing path allows for db connection in nested structure
-BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(BASE_PATH)
+from wtforms.widgets.core import TableWidget
 from georgia import db
 from georgia.models import  Donor, Donation, Official
 

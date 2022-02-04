@@ -1,33 +1,28 @@
-# import os
-# import sys
+import os
+import sys
 
-# #changing path allows for db connection in nested structure
-# BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# sys.path.append(BASE_PATH)
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_PATH)
 
 import csv
-from georgia.app_config import app, db
+from georgia import db, app
 import georgia.create as c
 import georgia.models as models
 import georgia.user_funcs as u
 
-#dropdb/createdb is utlized when changing database contents, otherwise can be excluded
-os.system("dropdb georgia_test")
-os.system("createdb georgia_test")
+os.system("dropdb georgia")
+os.system("createdb georgia")
 
 models.connect_to_db(app)
 db.create_all()
 
-# creates a list of dictionaries from the alldata.tsv file
+# pull a list of dictionaries from tsv file
 data_list = []
-with open("data/test.tsv", newline= "") as data:
+with open("data/alldata.tsv", newline= "") as data:
     data_reader = csv.DictReader(data, delimiter = '\t')
     for line in data_reader:
         data_list.append(line)
 
-
-
-# Parsing information for the Officials table
 def get_last_name(full_name):
     name_list = full_name.split(" ")
     comma_name = name_list[0]
@@ -76,6 +71,13 @@ for dict in data_list:
         dict["official_id"] = models.Official.get_official_id(db_official)
     
 
+
+
+
+
+
+
+
 # Seed database with donor info
 donor_list = []
 for dict in data_list:
@@ -102,8 +104,6 @@ for dict in data_list:
 
     db_donation = c.create_donation(amount=amount, election_year=election_year, record_count=record_count, donor_id=donor_id, official_id=official_id)
 
-
-#fake user info for demo purposes
 user_names = ["cspiering", "cesimms", "bsonderman", 'dkanaga', 'ndamluji', 'ialden', 'cduncan', 'jpineda']
 passwords = ['account', 'theme', 'choice', 'potato', 'fascinate', 'cast', 'pastel', 'lamp']
 emails = ['cespiering@gmail.com', 'carly.trial@gmail.com', 'bsonderman@pitzer.gov', 'dkanaga@nelnet.edu', 'ndamluji@whitman.edu', 'ialden@whitman.edu', 'cduncan@whitman.edu', 'jpineda@whitman.edu']
