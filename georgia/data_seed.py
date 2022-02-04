@@ -27,14 +27,16 @@ with open("data/alldata.tsv", newline= "") as data:
 
 
 
-# Parsing information for the Officials table
+# functions for parsing information for the Officials table
 def get_last_name(full_name):
+    """gets only the last name from official name"""
     name_list = full_name.split(" ")
     comma_name = name_list[0]
     last_name = comma_name[:-1]
     return last_name
 
 def parse_branch(position_name, party):
+    """returns branch of government"""
     if any(char.isdigit() for char in position_name):
         pos_list = position_name.split(" ")
         if "COMMISSIONER" in pos_list:
@@ -46,61 +48,71 @@ def parse_branch(position_name, party):
     return "E"
 
 def parse_court(position_name):
+    """for judicial officials, returns court"""
     if "APPELLATE" in position_name:
         return "APPELLATE"
     else:
         return "SUPREME"
-    
 
-#Seed database with official info  
-official_list = [] 
-for dict in data_list:
-    official_id = dict["ga_id"]
-    if official_id not in official_list:
-        official_list.append(official_id)
-        official_name = dict["Officeholder"]
-        last_name = get_last_name(official_name)
-        party = dict["General_Party"]
-        position_name = (dict["Office_Held"])
-        branch = parse_branch(position_name, party)
-        court = None
-        if branch == "J":
-            court = parse_court(position_name)
-        district = None
-        height = None
-        if any(char.isdigit() for char in position_name):
-            pos_list = position_name.split(" ")
-            district = pos_list[-1]
-            height = pos_list[0]
-        db_official = c.create_official(official_id=official_id, official_name=official_name, last_name=last_name, party=party, position_name=position_name, branch=branch, court=court, district=district, height=height)
-        dict["official_id"] = models.Official.get_official_id(db_official)
-    
 
-# Seed database with donor info
-donor_list = []
-for dict in data_list:
-    donor_id = dict["donor_id"]
-    if donor_id not in donor_list:
-        donor_list.append(donor_id)
+def create_official_entry(dict, official_id):
+    official_name = dict["Officeholder"]
+    last_name = get_last_name(official_name)
+    party = dict["General_Party"]
+    position_name = (dict["Office_Held"])
+    branch = parse_branch(position_name, party)
+    court = None
+    if branch == "J":
+        court = parse_court(position_name)
+    district = None
+    height = None
+    if any(char.isdigit() for char in position_name):
+        pos_list = position_name.split(" ")
+        district = pos_list[-1]
+        height = pos_list[0]
+    c.create_official(official_id=official_id, official_name=official_name, last_name=last_name, party=party, position_name=position_name, branch=branch, court=court, district=district, height=height)
+
+
+def create_donor_entry(dict, donor_id):
         donor_name = dict["Contributor"]
         donor_type = dict["Type_of_Contributor"]
         broad_sector = dict["Broad_Sector"]
         general_industry = dict["General_Industry"]
         specific_type = dict["Specific_Business"]
 
-        db_donor =c.create_donor(donor_id = donor_id, donor_name=donor_name, donor_type=donor_type, broad_sector=broad_sector, general_industry=general_industry, specific_type=specific_type)
-        dict["donor_id"]=models.Donor.get_donor_id(db_donor)
+        c.create_donor(donor_id = donor_id, donor_name=donor_name, donor_type=donor_type, broad_sector=broad_sector, general_industry=general_industry, specific_type=specific_type)
 
 
-# Seed database with donation info
-for dict in data_list:
+def create_donation_entry(dict):
     official_id = dict["ga_id"]
     donor_id = dict["donor_id"]
     amount = dict['Total_$']
     election_year = dict["Election_Year"]
     record_count = dict["#_of_Records"]
 
-    db_donation = c.create_donation(amount=amount, election_year=election_year, record_count=record_count, donor_id=donor_id, official_id=official_id)
+    c.create_donation(amount=amount, election_year=election_year, record_count=record_count, donor_id=donor_id, official_id=official_id)
+
+
+#Parse each data line and populate tables
+processed_officials = []
+processed_donors = []
+
+for dict in data_list:
+    official_id = dict["ga_id"]
+    donor_id = dict["donor_id"]
+
+
+    if official_id not in processed_officials:
+        processed_officials.append(official_id)
+        create_official_entry(dict)
+
+    if donor_id not in processed_donors:
+        processed_donors.append(donor_id)
+        create_donor_entry(dict, donor_id)
+    
+    create_donor_entry()
+
+
 
 
 #fake user info for demo purposes
@@ -113,5 +125,5 @@ for i in range(len(user_names)):
     password = passwords[i]
     email = emails[i]
 
-    db_user = u.create_user(email = email, user_name=user_name, password=password)
+    u.create_user(email = email, user_name=user_name, password=password)
 
