@@ -1,5 +1,5 @@
 from georgia import db
-from georgia.models import Donor, Donation, Official
+from georgia.Database.models import Donor, Donation, Official
 
 def get_all_officials():
     test = Official.query.all()

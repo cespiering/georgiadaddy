@@ -1,5 +1,5 @@
 from georgia import db
-from georgia.models import User
+from georgia.Database.models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # ^USER RELATED FUNCTIONS:
